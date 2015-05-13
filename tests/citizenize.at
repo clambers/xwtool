@@ -36,6 +36,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.14 foreign -Wall -Werror])
 CITIZEN_INIT
 CITIZEN_CONFIG_INSTANCE([instance.hh])
+AC_PROG_CXX
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 ]])
@@ -46,6 +47,9 @@ test_SOURCES = test.cc
 AT_DATA([test.cc],
 [[int main(void) { return 0; }
 ]])
+AT_DATA([expout],
+[[citizenize: installing scripts
+]])
 AT_CHECK([autoreconf -i], [0], [ignore], [ignore])
-AT_CHECK([cat m4/citizen.m4], [0], [ignore], [ignore])
+AT_CHECK([$CITIZENIZE], [0], [expout], [ignore])
 AT_CLEANUP
