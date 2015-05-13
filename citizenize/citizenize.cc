@@ -52,6 +52,8 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  install_scripts();
+
  done:
   return EXIT_SUCCESS;
 }
@@ -62,4 +64,8 @@ void do_help() {
 
 void do_version() {
   std::cout << PACKAGE_STRING << std::endl;
+}
+
+void install_scripts() {
+  std::cout << "citizenize: installing scripts" << std::endl;
 }

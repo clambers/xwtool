@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Citizen. If not, see <http://www.gnu.org/licenses/>.
 
+aclocaldir = $(datadir)/aclocal
+
 bin_PROGRAMS = citizenize
-ac_DATA = citizen.m4
+aclocal_DATA = citizen.m4
 
 citizenize_SOURCES = citizenize.cc citizenize.hh

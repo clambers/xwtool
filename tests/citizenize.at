@@ -27,3 +27,25 @@ AT_DATA([expout],
 ])
 AT_CHECK([$CITIZENIZE -v], [0], [expout], [ignore])
 AT_CLEANUP
+
+AT_SETUP([Project])
+AT_DATA([configure.ac],
+[[AC_INIT([Test], [1.0], [foo@bar.com])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+AM_INIT_AUTOMAKE([1.14 foreign -Wall -Werror])
+CITIZEN_INIT
+CITIZEN_CONFIG_INSTANCE([instance.hh])
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+]])
+AT_DATA([Makefile.am],
+[[bin_PROGRAMS = test
+test_SOURCES = test.cc
+]])
+AT_DATA([test.cc],
+[[int main(void) { return 0; }
+]])
+AT_CHECK([autoreconf -i], [0], [ignore], [ignore])
+AT_CHECK([cat m4/citizen.m4], [0], [ignore], [ignore])
+AT_CLEANUP

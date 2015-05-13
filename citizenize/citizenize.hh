@@ -22,5 +22,6 @@
 
 void do_help();
 void do_version();
+void install_scripts();
 
 #endif
