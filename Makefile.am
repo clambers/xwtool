@@ -18,3 +18,4 @@
 ACLOCAL_AMFLAGS = -I m4
 AM_CXXFLAGS = -std=c++11
 SUBDIRS = citizen citizenize tests
+EXTRA_DIST = autogen.sh build-aux/verbose.mk
