@@ -1,0 +1,3 @@
+CPPFLAGS="@CPPFLAGS@"
+CITIZEN="$abs_top_builddir/citizen/citizen"
+CITIZENIZE="$abs_top_builddir/citizenize/citizenize"
