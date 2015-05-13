@@ -21,6 +21,9 @@ AUTOM4TE = $(top_srcdir)/build-aux/missing --run autom4te
 AUTOTEST = $(AUTOM4TE) --language=autotest
 TESTSUITE = $(top_srcdir)/tests/testsuite
 TESTSUITE_AT = testsuite.at citizen.at citizenize.at
+EXTRA_DIST = $(TESTSUITE_AT) $(TESTSUITE)
+DISTCLEANFILES = atconfig atlocal
+MAINTAINERCLEANFILES = $(TESTSUITE)
 
 $(TESTSUITE): $(TESTSUITE_AT)
 	$(AM_V_GEN) $(AUTOTEST) -o $@.tmp $@.at; \
