@@ -1,2 +1,2 @@
   * Chris Lamberson (clamberson@gmail.com)
-    * Original author of Citizen
+    * Original author of XWtool

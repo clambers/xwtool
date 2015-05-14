@@ -1,3 +1,4 @@
 CPPFLAGS="@CPPFLAGS@"
-CITIZEN="$abs_top_builddir/citizen/citizen"
-CITIZENIZE="$abs_top_builddir/citizenize/citizenize"
+XWTOOL="$abs_top_builddir/xwtool/xwtool"
+XWTOOLIZE="$abs_top_builddir/xwtoolize/xwtoolize"
+ACDIR="$abs_top_srcdir/m4"

@@ -1,31 +1,31 @@
 # Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.
 #
-# This file is part of Citizen.
+# This file is part of XWtool.
 #
-# Citizen is free software: you can redistribute it and/or modify
+# XWtool is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Citizen is distributed in the hope that it will be useful,
+# XWtool is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Citizen. If not, see <http://www.gnu.org/licenses/>.
+# along with XWtool. If not, see <http://www.gnu.org/licenses/>.
 
-AT_BANNER([Citizenize.])
+AT_BANNER([XWtoolize.])
 
 AT_SETUP([No arguments])
-AT_CHECK([$CITIZENIZE], [0], [ignore], [ignore])
+AT_CHECK([$XWTOOLIZE], [0], [ignore], [ignore])
 AT_CLEANUP
 
 AT_SETUP([Version])
 AT_DATA([expout],
 [AT_PACKAGE_STRING
 ])
-AT_CHECK([$CITIZENIZE -v], [0], [expout], [ignore])
+AT_CHECK([$XWTOOLIZE -v], [0], [expout], [ignore])
 AT_CLEANUP
 
 AT_SETUP([Project])
@@ -41,15 +41,16 @@ AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 ]])
 AT_DATA([Makefile.am],
-[[bin_PROGRAMS = test
+[[ACLOCAL_AMFLAGS = --system-acdir=$(ACDIR)
+bin_PROGRAMS = test
 test_SOURCES = test.cc
 ]])
 AT_DATA([test.cc],
 [[int main(void) { return 0; }
 ]])
 AT_DATA([expout],
-[[citizenize: installing scripts
+[[xwtoolize: installing scripts
 ]])
-AT_CHECK([autoreconf -i], [0], [ignore], [ignore])
-AT_CHECK([$CITIZENIZE], [0], [expout], [ignore])
+AT_CHECK([ACDIR=$ACDIR autoreconf -i], [0], [ignore], [ignore])
+AT_CHECK([$XWTOOLIZE], [0], [expout], [ignore])
 AT_CLEANUP

@@ -1,26 +1,26 @@
 # Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.
 #
-# This file is part of Citizen.
+# This file is part of XWtool.
 #
-# Citizen is free software: you can redistribute it and/or modify
+# XWtool is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# Citizen is distributed in the hope that it will be useful,
+# XWtool is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Citizen. If not, see <http://www.gnu.org/licenses/>.
+# along with XWtool. If not, see <http://www.gnu.org/licenses/>.
 
 include $(top_srcdir)/build-aux/verbose.mk
 
 AUTOM4TE = $(top_srcdir)/build-aux/missing --run autom4te
 AUTOTEST = $(AUTOM4TE) --language=autotest
 TESTSUITE = $(top_srcdir)/tests/testsuite
-TESTSUITE_AT = testsuite.at citizen.at citizenize.at
+TESTSUITE_AT = testsuite.at xwtool.at xwtoolize.at
 EXTRA_DIST = $(TESTSUITE_AT) $(TESTSUITE)
 DISTCLEANFILES = atconfig atlocal
 MAINTAINERCLEANFILES = $(TESTSUITE)
