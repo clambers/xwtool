@@ -18,3 +18,4 @@
 bin_PROGRAMS = xwtool
 
 xwtool_SOURCES = xwtool.cc xwtool.hh
+xwtool_CXXFLAGS = -std=c++11

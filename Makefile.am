@@ -16,7 +16,6 @@
 # along with XWtool. If not, see <http://www.gnu.org/licenses/>.
 
 ACLOCAL_AMFLAGS = -I m4
-AM_CXXFLAGS = -std=c++11
 SUBDIRS = xwtool xwtoolize tests
 EXTRA_DIST = COPYING autogen.sh build-aux/verbose.mk
 

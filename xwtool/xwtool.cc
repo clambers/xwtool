@@ -18,48 +18,31 @@
  */
 
 #include "xwtool.hh"
-#include <config.h>
 #include <getopt.h>
 #include <cstdlib>
 #include <iostream>
 
-int main(int argc, char *argv[]) {
-  int ch;
+int main(int argc, char** argv) {
+  std::vector<xw::method> methods;
+  xw::rpc_parse_context ctx(&methods);
+  std::string err;
 
-  while (1) {
-    static struct option long_options[] = {
-      { "help",    no_argument, 0, 'h' },
-      { "version", no_argument, 0, 'v' },
-      { 0, 0, 0, 0 }
-    };
-
-    int optind = 0;
-
-    ch = getopt_long(argc, argv, "hv", long_options, &optind);
-
-    if (ch == -1) {
-      break;
-    }
-
-    switch (ch) {
-    case 'h':
-      do_help();
-      goto done;
-
-    case 'v':
-      do_version();
-      goto done;
-    }
+  try {
+    picojson::_parse(ctx, std::istream_iterator<char>(std::cin),
+                     std::istream_iterator<char>(), &err);
+  } catch (std::runtime_error const& e) {
+    std::cerr << "parse error: " << e.what() << std::endl;
+    return EXIT_FAILURE;
   }
 
- done:
+  if (!err.empty()) {
+    std::cerr << err << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  for (auto method : methods) {
+    method.print(std::cout);
+  }
+
   return EXIT_SUCCESS;
-}
-
-void do_help() {
-  std::cout << "Help string" << std::endl;
-}
-
-void do_version() {
-  std::cout << PACKAGE_STRING << std::endl;
 }
