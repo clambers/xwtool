@@ -16,8 +16,5 @@
 # along with XWtool. If not, see <http://www.gnu.org/licenses/>.
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = xwtool tests
+SUBDIRS = m4 xwtool tests
 EXTRA_DIST = COPYING autogen.sh build-aux/verbose.mk
-
-m4dir = $(datadir)/aclocal
-m4_DATA = m4/xwtool.m4

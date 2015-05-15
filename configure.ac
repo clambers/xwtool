@@ -22,7 +22,6 @@ AC_INIT([XWtool], [1.0], [https://github.com/dutch/xwtool/issues], [],
 AC_COPYRIGHT([Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.])
 AC_CONFIG_SRCDIR([xwtool/xwtool.cc])
 AC_CONFIG_AUX_DIR([build-aux])
-AC_REQUIRE_AUX_FILE([verbose.mk])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_TESTDIR([tests])
 
@@ -32,7 +31,7 @@ AM_SILENT_RULES([yes])
 AC_PROG_CXX
 
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile xwtool/Makefile tests/Makefile tests/package.m4
-tests/atlocal])
+AC_CONFIG_FILES([Makefile m4/Makefile xwtool/Makefile tests/Makefile
+tests/package.m4 tests/atlocal])
 
 AC_OUTPUT
