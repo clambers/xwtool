@@ -1,3 +1,6 @@
+#ifndef XW_SPEC_HH
+#define XW_SPEC_HH
+
 /**
  * Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.
  *
@@ -17,21 +20,30 @@
  * along with XWtool. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xwcontext.hh"
-#include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
+#include "picojson.h"
+#include <string>
+#include <vector>
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
+namespace xw {
+  class method {
+  public:
+    using type = picojson::object;
+    using name_type = std::string;
+    using params_type = picojson::object;
+    using returns_type = picojson::value;
 
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
+    method();
+    method(type&);
+    virtual ~method();
+    void dump(std::ostream&);
 
-  return EXIT_SUCCESS;
+  private:
+    picojson::value name;
+    picojson::value params;
+    picojson::value returns;
+  };
+
+  using specification = std::vector<method>;
 }
+
+#endif

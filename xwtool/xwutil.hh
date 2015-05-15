@@ -1,3 +1,6 @@
+#ifndef XW_UTIL_HH
+#define XW_UTIL_HH
+
 /**
  * Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.
  *
@@ -17,21 +20,15 @@
  * along with XWtool. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xwcontext.hh"
 #include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
+#include "picojson.h"
+#include <string>
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
-
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
-
-  return EXIT_SUCCESS;
+namespace xw {
+  std::string dectype(picojson::value&);
+  std::string argtype(picojson::value&);
+  std::string jstype(picojson::value&);
+  specification parse();
 }
+
+#endif

@@ -15,16 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with XWtool. If not, see <http://www.gnu.org/licenses/>.
 
-XWSOURCES = \
-  picojson.h \
-  xwexcept.cc xwexcept.hh \
-  xwcontext.cc xwcontext.hh \
-  xwspec.cc xwspec.hh \
-  xwutil.cc xwutil.hh \
-  xwapplication.cc xwapplication.hh \
-  xwtool.cc
+AT_BANNER([Parsing.])
 
-bin_PROGRAMS = xwtool
-
-xwtool_SOURCES = $(XWSOURCES)
-xwtool_CXXFLAGS = -std=c++11
+AT_SETUP([Empty Object])
+m4_pushdef([FILE], [empty_object.json])
+AT_DATA(FILE,
+[[[{}]
+]])
+AT_CHECK([$XWTOOL FILE], [1], [ignore], [ignore])
+AT_CLEANUP

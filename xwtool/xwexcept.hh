@@ -1,3 +1,6 @@
+#ifndef XW_EXCEPT_HH
+#define XW_EXCEPT_HH
+
 /**
  * Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.
  *
@@ -17,21 +20,22 @@
  * along with XWtool. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xwcontext.hh"
-#include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
+#include <exception>
+#include <stdexcept>
+#include <sstream>
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
+namespace xw {
+  class bad_value : public std::runtime_error {
+  public:
+    bad_value(std::string const&);
+    virtual char const* what() const throw() override;
 
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
-
-  return EXIT_SUCCESS;
+  private:
+    static std::ostringstream msg;
+    std::string value;
+  };
 }
+
+std::ostringstream xw::bad_value::msg;
+
+#endif

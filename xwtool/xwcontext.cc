@@ -18,20 +18,15 @@
  */
 
 #include "xwcontext.hh"
-#include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
+using namespace xw;
 
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
+rpc_parse_context::rpc_parse_context(specification* m) : out(m) {}
 
-  return EXIT_SUCCESS;
+bool rpc_parse_context::parse_array_stop(size_t) {
+  return true;
+}
+
+bool rpc_parse_context::parse_array_start() {
+  return true;
 }

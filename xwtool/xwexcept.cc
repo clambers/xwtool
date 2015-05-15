@@ -17,21 +17,15 @@
  * along with XWtool. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xwcontext.hh"
-#include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
+#include "xwexcept.hh"
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
+using namespace xw;
 
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
+bad_value::bad_value(std::string const& value)
+  : runtime_error("bad configuration value"), value(value) {}
 
-  return EXIT_SUCCESS;
+char const* bad_value::what() const throw() {
+  msg.str("");
+  msg << std::runtime_error::what() << ": " << value;
+  return msg.str().c_str();
 }
