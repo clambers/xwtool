@@ -32,7 +32,7 @@ AM_SILENT_RULES([yes])
 AC_PROG_CXX
 
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_FILES([Makefile xwtool/Makefile xwtoolize/Makefile tests/Makefile
-tests/package.m4 tests/atlocal])
+AC_CONFIG_FILES([Makefile xwtool/Makefile tests/Makefile tests/package.m4
+tests/atlocal])
 
 AC_OUTPUT

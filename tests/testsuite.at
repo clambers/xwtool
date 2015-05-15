@@ -20,4 +20,3 @@ AT_COPYRIGHT([Copyright (C) 2015 Chris Lamberson <clamberson@gmail.com>.])
 AT_COLOR_TESTS
 
 m4_include([xwtool.at])
-m4_include([xwtoolize.at])

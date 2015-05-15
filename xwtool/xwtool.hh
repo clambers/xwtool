@@ -110,7 +110,7 @@ namespace xw {
 
     virtual ~method() {}
 
-    void print(std::ostream o) {
+    void print(std::ostream& o) {
       o << "foobar" << std::endl;
     }
 
@@ -139,7 +139,7 @@ namespace xw {
     }
 
     template<typename T>
-    bool parse_object_item(picojson::input<T>& in, std::string const& key) {
+    bool parse_array_item(picojson::input<T>& in, size_t) {
       picojson::value value;
       picojson::default_parse_context ctx(&value);
 
@@ -147,14 +147,17 @@ namespace xw {
         return false;
       }
 
-      *out = method(value);
+      if (value.is<picojson::object>()) {
+        spec.push_back(value.get<picojson::object>());
+      }
+
+      *out = spec;
 
       return true;
     }
 
   private:
-    std::string type;
-    double version;
+    specification spec;
     specification* out;
   };
 }
