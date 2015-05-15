@@ -18,14 +18,14 @@
 AUTOM4TE = $(top_srcdir)/build-aux/missing --run autom4te
 AUTOTEST = $(AUTOM4TE) --language=autotest
 TESTSUITE = $(top_srcdir)/tests/testsuite
-TESTSUITE_AT = testsuite.at xwtool.at
+TESTSUITE_AT = testsuite.at arguments.at parsing.at
 EXTRA_DIST = $(TESTSUITE_AT) $(TESTSUITE)
 DISTCLEANFILES = atconfig atlocal
 MAINTAINERCLEANFILES = $(TESTSUITE)
 
 AX_V_TEST = $(AX_V_TEST_$(V))
 AX_V_TEST_ = $(AX_V_TEST_$(AM_DEFAULT_VERBOSITY))
-AX_V_TEST_0 = @echo "  TEST    " `basename $<`;
+AX_V_TEST_0 = @echo "  TEST    " $<;
 AX_V_TEST_1 =
 
 $(TESTSUITE): $(TESTSUITE_AT)
