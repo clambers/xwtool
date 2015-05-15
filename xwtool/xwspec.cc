@@ -17,21 +17,25 @@
  * along with XWtool. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "xwcontext.hh"
 #include "xwspec.hh"
-#include "xwutil.hh"
-#include "xwapplication.hh"
-#include <unistd.h>
-#include <cstdlib>
-#include <iostream>
 
-int main(int argc, char** argv) {
-  xw::application app;
-  xw::specification spec(app.parse());
+using namespace xw;
 
-  for (auto method : spec) {
-    method.dump(std::cout);
+method::method() {}
+
+method::method(type& json) : name(json["name"]), params(json["params"]),
+                             returns(json["returns"]) {
+  if (!name.is<name_type>()) {
+    throw std::runtime_error("method name not a String");
   }
 
-  return EXIT_SUCCESS;
+  if (!params.is<params_type>()) {
+    throw std::runtime_error("method params not an Object");
+  }
+}
+
+method::~method() {}
+
+void method::dump(std::ostream& o) {
+  o << "foobar" << std::endl;
 }
