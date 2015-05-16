@@ -21,13 +21,20 @@
  */
 
 #include "xwspec.hh"
+#include <fstream>
 
 namespace xw {
   class application {
   public:
     application();
+    application(int*, char***);
     virtual ~application();
     specification parse();
+
+  private:
+    std::string opath;
+
+    std::ostream& out();
   };
 }
 
