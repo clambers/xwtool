@@ -21,16 +21,9 @@
 #include "xwspec.hh"
 #include "xwutil.hh"
 #include "xwapplication.hh"
-#include <cstdlib>
 #include <iostream>
 
 int main(int argc, char** argv) {
   xw::application app(&argc, &argv);
-  xw::specification spec(app.parse());
-
-  for (auto method : spec) {
-    method.dump(std::cout);
-  }
-
-  return EXIT_SUCCESS;
+  return app.run();
 }
