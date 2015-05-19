@@ -23,6 +23,7 @@
 #include "xwspec.hh"
 #include "picojson.h"
 #include <string>
+#include <initializer_list>
 
 namespace xw {
   template<typename> struct typestr {
@@ -39,6 +40,28 @@ namespace xw {
   IS(bool, Boolean)
   IS(std::string, String)
 #undef IS
+
+  class formatter {
+  public:
+    formatter(std::ostream&);
+    virtual ~formatter();
+
+  protected:
+    std::ostream out;
+  };
+
+  class include_guard : public formatter {
+  public:
+    include_guard(std::ostream&, std::string const&);
+    virtual ~include_guard();
+  };
+
+  class cpp_include : public formatter {
+  public:
+    cpp_include(std::ostream&, std::string const&);
+    cpp_include(std::ostream&, std::initializer_list<std::string>);
+    virtual ~cpp_include();
+  };
 }
 
 #endif

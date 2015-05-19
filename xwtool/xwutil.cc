@@ -18,5 +18,42 @@
  */
 
 #include "xwutil.hh"
+#include <iostream>
 
 using namespace xw;
+
+formatter::formatter(std::ostream& o) : out(o.rdbuf()) {}
+
+formatter::~formatter() {}
+
+include_guard::include_guard(std::ostream& o, std::string const& s)
+  : formatter(o) {
+  out
+    << "#ifndef " << s << std::endl
+    << "#define " << s << std::endl
+    << std::endl;
+}
+
+include_guard::~include_guard() {
+  out
+    << std::endl
+    << "#endif" << std::endl;
+}
+
+cpp_include::cpp_include(std::ostream& o, std::string const& s)
+  : formatter(o) {
+  out
+    << "#include <" << s << ">" << std::endl
+    << std::endl;
+}
+
+cpp_include::cpp_include(std::ostream& o,
+                         std::initializer_list<std::string> il)
+  : formatter(o) {
+  for (auto s : il) {
+    out << "#include <" << s << ">" << std::endl;
+  }
+  out << std::endl;
+}
+
+cpp_include::~cpp_include() {}

@@ -120,9 +120,8 @@ void application::run() {
     throw xwtool_error(err);
   }
 
-  std::ofstream outfile(!outpath.empty() ? outpath : "api.out");
-
-  for (auto method : methods) {
-    method.dump(outfile);
-  }
+  std::ofstream of(!outpath.empty() ? outpath : "api.out");
+  include_guard guard(of, "XWTOOL_HEADER_DEFINED");
+  cpp_include includes(of, {"string", "functional"});
+  of << "foobar" << std::endl;
 }
