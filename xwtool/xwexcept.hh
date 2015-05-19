@@ -67,8 +67,7 @@ namespace xw {
   template<typename T> std::ostringstream bad_type<T>::msg;
 
   template<typename T> bad_type<T>::bad_type(picojson::value const& value)
-    : xwtool_error("wrong type for "
-                   + value.serialize()
+    : xwtool_error(std::string("wrong type for ") + value.serialize()
                    + " (expected "
                    + typestr<T>::js()
                    + ")") {}
