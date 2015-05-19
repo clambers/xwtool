@@ -25,10 +25,20 @@
 #include <string>
 
 namespace xw {
-  std::string dectype(picojson::value&);
-  std::string argtype(picojson::value&);
-  std::string jstype(picojson::value&);
-  specification parse();
+  template<typename> struct typestr {
+    static char const* js();
+  };
+
+#define IS(x,y)                                 \
+  template<> struct typestr<x> {                \
+    static char const* js() { return #y; }      \
+  };
+  IS(picojson::array, Array)
+  IS(picojson::object, Object)
+  IS(double, Number)
+  IS(bool, Boolean)
+  IS(std::string, String)
+#undef IS
 }
 
 #endif

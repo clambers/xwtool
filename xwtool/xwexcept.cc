@@ -21,11 +21,28 @@
 
 using namespace xw;
 
-bad_value::bad_value(std::string const& value)
-  : runtime_error("bad configuration value"), value(value) {}
+std::ostringstream xwtool_error::msg;
+std::ostringstream object_error::msg;
 
-char const* bad_value::what() const throw() {
+xwtool_error::xwtool_error(std::string const& err)
+  : std::runtime_error("xwtool: "), err(err) {}
+
+char const* xwtool_error::what() const throw() {
   msg.str("");
-  msg << std::runtime_error::what() << ": " << value;
+  msg << std::runtime_error::what() << err;
   return msg.str().c_str();
 }
+
+object_error::object_error(picojson::value& value,
+                           std::string const& issue)
+  : xwtool_error("method '" + value.serialize() + "' "), issue(issue) {}
+
+char const* object_error::what() const throw() {
+  msg.str("");
+  msg << xwtool_error::what() << issue;
+  return msg.str().c_str();
+}
+
+method_error::method_error(picojson::value& value,
+                           std::string const& issue)
+  : object_error(value.get<method::type>()["name"], issue) {}

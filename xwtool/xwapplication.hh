@@ -24,25 +24,16 @@
 #include <fstream>
 
 namespace xw {
-  class cout_redirector {
-  public:
-    cout_redirector(std::string);
-    virtual ~cout_redirector();
-
-  private:
-    std::filebuf of;
-    std::streambuf* old;
-  };
-
   class application {
   public:
     application();
     application(int*, char***);
     virtual ~application();
-    int run();
+    void run();
 
   private:
-    std::string outpath;
+    int argc;
+    char** argv;
   };
 }
 

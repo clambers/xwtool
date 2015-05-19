@@ -21,6 +21,7 @@
  */
 
 #include "xwspec.hh"
+#include "xwexcept.hh"
 #include "picojson.h"
 
 namespace xw {
@@ -42,16 +43,23 @@ namespace xw {
   bool rpc_parse_context::parse_array_item(input<T>& in, size_t) {
     picojson::value value;
     picojson::default_parse_context ctx(&value);
+    method::type meth;
 
     if (!picojson::_parse(ctx, in)) {
       return false;
     }
 
-    if (value.is<picojson::object>()) {
-      spec.push_back(value.get<picojson::object>());
+    if (!value.is<method::type>()) {
+      throw bad_type<method::type>(value);
     }
 
-    *out = spec;
+    if (!value.contains("name")) {
+      throw object_error(value, "has no name");
+    }
+
+    if (!value.contains("params")) {
+      throw method_error(value, "has no params");
+    }
 
     return true;
   }

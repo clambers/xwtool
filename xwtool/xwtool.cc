@@ -25,5 +25,14 @@
 
 int main(int argc, char** argv) {
   xw::application app(&argc, &argv);
-  return app.run();
+  int result = EXIT_SUCCESS;
+
+  try {
+    app.run();
+  } catch (std::runtime_error const& e) {
+    std::cerr << e.what() << std::endl;
+    result = EXIT_FAILURE;
+  }
+
+  return result;
 }

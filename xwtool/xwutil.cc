@@ -18,42 +18,5 @@
  */
 
 #include "xwutil.hh"
-#include "xwcontext.hh"
-
-#define Q(x) #x
-#define QUOTE(x) Q(x)
 
 using namespace xw;
-
-std::string dectype(picojson::value& v) {
-#define CTYPE(t) if (v.is<t>()) return QUOTE(t)
-  CTYPE(picojson::object);
-  CTYPE(picojson::array);
-  CTYPE(bool);
-  CTYPE(double);
-  CTYPE(std::string);
-#undef CTYPE
-  return "<undefined>";
-}
-
-std::string argtype(picojson::value& v) {
-#define IS(t,u) if (v.is<t>()) return QUOTE(u)
-  IS(picojson::object, picojson::object const&);
-  IS(picojson::array, picojson::array const&);
-  IS(bool, bool);
-  IS(double, double);
-  IS(std::string, std::string const&);
-#undef IS
-  return "<undefined>";
-}
-
-std::string jstype(picojson::value& v) {
-#define IS(t,u) if (v.is<t>()) return QUOTE(u)
-  IS(picojson::object, Object);
-  IS(picojson::array, Array);
-  IS(bool, Boolean);
-  IS(double, Number);
-  IS(std::string, String);
-#undef IS
-  return "<undefined>";
-}

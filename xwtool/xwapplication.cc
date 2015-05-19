@@ -18,6 +18,7 @@
  */
 
 #include "xwapplication.hh"
+#include "xwexcept.hh"
 #include "xwcontext.hh"
 #include <config.h>
 #include <getopt.h>
@@ -26,24 +27,18 @@
 
 using namespace xw;
 
-cout_redirector::cout_redirector(std::string path) {
-  if (!path.empty()) {
-    of.open(path, std::ios_base::out);
-    old = std::cout.rdbuf(&of);
-  }
-}
-
-cout_redirector::~cout_redirector() {
-  std::cout.rdbuf(old);
-}
-
 application::application() {}
 
-application::application(int* argc, char*** argv) {
+application::application(int* argc, char*** argv) : argc(*argc), argv(*argv) {}
+
+application::~application() {}
+
+void application::run() {
   int do_help = 0;
   int do_version = 0;
   int do_output = 0;
   char ch;
+  std::string outpath;
 
   static struct option lopts[] = {
     {"help", no_argument, &do_help, 1},
@@ -52,7 +47,7 @@ application::application(int* argc, char*** argv) {
     {0,0,0,0}
   };
 
-  while ((ch = getopt_long(*argc, *argv, ":hvo:", lopts, nullptr)) != -1) {
+  while ((ch = getopt_long(argc, argv, ":hvo:", lopts, nullptr)) != -1) {
     switch (ch) {
     case 0:
       break;
@@ -70,7 +65,7 @@ application::application(int* argc, char*** argv) {
       break;
 
     case ':':
-      std::cerr << *argv[0]
+      std::cerr << argv[0]
                 << ": option -"
                 << optopt
                 << " requires an argument"
@@ -78,7 +73,7 @@ application::application(int* argc, char*** argv) {
       break;
 
     case '?':
-      std::cerr << *argv[0]
+      std::cerr << argv[0]
                 << ": option -"
                 << optopt
                 << " not recognized: ignored"
@@ -88,12 +83,15 @@ application::application(int* argc, char*** argv) {
   }
 
   if (do_help) {
-    std::cout << "Usage: xwtool [options] [file]" << std::endl
-              << std::endl
-              << "Options:" << std::endl
-              << "  -h, --help     print this message" << std::endl
-              << "  -v, --version  print version information" << std::endl
-              << "  -o, --output   output file" << std::endl;
+    std::cout
+      << "Usage: xwtool [options] [file]" << std::endl
+      << std::endl
+      << "Process a JSON file and generate a C++ XW header." << std::endl
+      << std::endl
+      << "Options:" << std::endl
+      << "  -h, --help     print this message" << std::endl
+      << "  -v, --version  print version information" << std::endl
+      << "  -o, --output   output file" << std::endl;
     exit(EXIT_SUCCESS);
   }
 
@@ -102,37 +100,31 @@ application::application(int* argc, char*** argv) {
     exit(EXIT_SUCCESS);
   }
 
-  if (optind < *argc) {
-    outpath = (*argv)[optind];
+  if (!(optind < argc)) {
+    throw xwtool_error("no input files");
   }
-}
 
-application::~application() {}
+  std::ifstream infile(argv[optind]);
+  if (!infile.is_open()) {
+    throw xwtool_error(std::string("error opening '") + argv[optind] + "'");
+  }
 
-int application::run() {
-  cout_redirector cm(outpath);
   specification methods;
   rpc_parse_context ctx(&methods);
   std::string err;
 
-  try {
-    picojson::_parse(ctx, std::istream_iterator<char>(std::cin),
-                     std::istream_iterator<char>(), &err);
-  } catch (std::runtime_error const& e) {
-    std::cerr << "parse error: " << e.what() << std::endl;
-    return EXIT_FAILURE;
-  }
+  picojson::_parse(ctx, std::istream_iterator<char>(infile),
+                   std::istream_iterator<char>(), &err);
 
   if (!err.empty()) {
-    std::cerr << err << std::endl;
-    return EXIT_FAILURE;
+    throw xwtool_error(err);
   }
+
+  std::ofstream outfile(!outpath.empty() ? outpath : "api.out");
 
   for (auto method : methods) {
     std::cout << "method: ";
-    method.dump(std::cout);
+    method.dump(outfile);
     std::cout << std::endl;
   }
-
-  return EXIT_SUCCESS;
 }
