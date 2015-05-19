@@ -23,10 +23,17 @@ using namespace xw;
 
 method::method() {}
 
-method::method(type& json) {}
+method::method(type& json) {
+  name = json["name"].get<name_type>();
+  params = json["params"].get<params_type>();
+}
 
 method::~method() {}
 
-void method::dump(std::ostream& o) {
-  o << "foobar" << std::endl;
+void method::dump(std::ostream& out) {
+  out << "method: " << name << std::endl;
+  out << "  params:" << std::endl;
+  for (auto param : params) {
+    out << "    " << param.first << " (" << param.second << ")" << std::endl;
+  }
 }

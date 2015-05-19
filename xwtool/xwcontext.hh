@@ -61,6 +61,8 @@ namespace xw {
       throw method_error(value, "has no params");
     }
 
+    spec.push_back(value.get<picojson::object>());
+
     return true;
   }
 }

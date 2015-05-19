@@ -123,8 +123,6 @@ void application::run() {
   std::ofstream outfile(!outpath.empty() ? outpath : "api.out");
 
   for (auto method : methods) {
-    std::cout << "method: ";
     method.dump(outfile);
-    std::cout << std::endl;
   }
 }
