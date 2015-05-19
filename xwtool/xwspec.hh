@@ -30,7 +30,6 @@ namespace xw {
     using type = picojson::object;
     using name_type = std::string;
     using params_type = picojson::object;
-    using returns_type = picojson::value;
 
     method();
     method(type&);
@@ -38,8 +37,8 @@ namespace xw {
     void dump(std::ostream&);
 
   private:
-    picojson::value name;
-    picojson::value params;
+    name_type name;
+    params_type params;
     picojson::value returns;
   };
 

@@ -23,10 +23,12 @@ using namespace xw;
 
 rpc_parse_context::rpc_parse_context(specification* m) : out(m) {}
 
-bool rpc_parse_context::parse_array_stop(size_t) {
+bool rpc_parse_context::parse_array_start() {
   return true;
 }
 
-bool rpc_parse_context::parse_array_start() {
+bool rpc_parse_context::parse_array_stop(size_t) {
+  *out = spec;
+
   return true;
 }

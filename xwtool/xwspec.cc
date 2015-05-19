@@ -23,16 +23,7 @@ using namespace xw;
 
 method::method() {}
 
-method::method(type& json) : name(json["name"]), params(json["params"]),
-                             returns(json["returns"]) {
-  if (!name.is<name_type>()) {
-    throw std::runtime_error("method name not a String");
-  }
-
-  if (!params.is<params_type>()) {
-    throw std::runtime_error("method params not an Object");
-  }
-}
+method::method(type& json) {}
 
 method::~method() {}
 
