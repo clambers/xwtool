@@ -18,6 +18,7 @@
  */
 
 #include "xwspec.hh"
+#include "xwutil.hh"
 
 using namespace xw;
 
@@ -31,9 +32,22 @@ method::method(type& json) {
 method::~method() {}
 
 void method::dump(std::ostream& out) {
-  out << "method: " << name << std::endl;
-  out << "  params:" << std::endl;
-  for (auto param : params) {
-    out << "    " << param.first << " (" << param.second << ")" << std::endl;
-  }
+  out << "exports." << name << " = function(";
+  std::copy(std::begin(params), std::end(params),
+            signature_maker<params_type::value_type>(out, ", "));
+  out
+    << ") {" << std::endl
+    << "  var id = callbacks.setup(callback);" << std::endl
+    << "  var msg = {" << std::endl
+    << "    method: \"" << name << "\"," << std::endl
+    << "    params: {" << std::endl
+    << "      ";
+  std::copy(std::begin(params), std::end(params),
+            params_builder<params_type::value_type>(out, "      "));
+  out
+    << "    }" << std::endl
+    << "  };" << std::endl
+    << "  postMessage(id, msg);" << std::endl
+    << "};" << std::endl
+    << std::endl;
 }

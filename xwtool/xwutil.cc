@@ -26,6 +26,48 @@ formatter::formatter(std::ostream& o) : out(o.rdbuf()) {}
 
 formatter::~formatter() {}
 
+js_globals::js_globals(std::ostream& o) : formatter(o) {
+  out
+    << "var callbacks = {" << std::endl
+    << "  nextId: 0," << std::endl
+    << "  handlers: {}," << std::endl
+    << "  key: \"id\"," << std::endl
+    << "  setup: function(cb) {" << std::endl
+    << "    var id = ++this.nextId;" << std::endl
+    << "    this.handlers[id] = cb;" << std::endl
+    << "    return id;" << std::endl
+    << "  }," << std::endl
+    << "  dispatch: function(response) {" << std::endl
+    << "    var id = response[this.key];" << std::endl
+    << "    var handler = this.handlers[id];" << std::endl
+    << "    handler(response.result);" << std::endl
+    << "  }" << std::endl
+    << "};" << std::endl
+    << "function postMessage(id, msg) {" << std::endl
+    << "  msg.jsonrpc = \"2.0\";" << std::endl
+    << "  if (id !== undefined && id !== null) {" << std::endl
+    << "    msg[callbacks.key] = id;" << std::endl
+    << "  }" << std::endl
+    << "  extension.postMessage(JSON.stringify(msg));" << std::endl
+    << "}" << std::endl
+    << "extension.setMessageListener(function(msg) {" << std::endl
+    << "  var res = JSON.parse(msg)" << std::endl
+    << "  callbacks.dispatch(res);" << std::endl
+    << "});" << std::endl
+    << std::endl;
+}
+
+js_globals::~js_globals() {}
+
+js_methods::js_methods(std::ostream& o, specification const& s)
+  : formatter(o) {
+  for (auto spec : s) {
+    spec.dump(out);
+  }
+}
+
+js_methods::~js_methods() {}
+
 include_guard::include_guard(std::ostream& o, std::string const& s)
   : formatter(o) {
   out
@@ -35,17 +77,19 @@ include_guard::include_guard(std::ostream& o, std::string const& s)
 }
 
 include_guard::~include_guard() {
-  out
-    << std::endl
-    << "#endif" << std::endl;
+  out << "#endif" << std::endl;
 }
 
-cpp_include::cpp_include(std::ostream& o, std::string const& s)
+comment::comment(std::ostream& o, std::initializer_list<std::string> cs)
   : formatter(o) {
-  out
-    << "#include <" << s << ">" << std::endl
-    << std::endl;
+  out << "/**" << std::endl;
+  for (auto c : cs) {
+    out << " * " << c << std::endl;
+  }
+  out << " */" << std::endl << std::endl;
 }
+
+comment::~comment() {}
 
 cpp_include::cpp_include(std::ostream& o,
                          std::initializer_list<std::string> il)
